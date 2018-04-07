@@ -169,12 +169,13 @@ public class PlaylistTracksFragment extends OdysseyFragment<TrackModel> implemen
      * @param bundle Optional arguments
      * @return Return a new Loader instance that is ready to start loading.
      */
+    @NonNull
     @Override
     public Loader<List<TrackModel>> onCreateLoader(int id, Bundle bundle) {
         if (mPlaylistPath == null) {
-            return new TrackLoader(getActivity().getApplicationContext(), mPlaylistID);
+            return new TrackLoader(requireContext().getApplicationContext(), mPlaylistID);
         } else {
-            return new PlaylistTrackLoader(getActivity().getApplicationContext(), mPlaylistPath);
+            return new PlaylistTrackLoader(requireContext().getApplicationContext(), mPlaylistPath);
         }
     }
 
@@ -228,7 +229,7 @@ public class PlaylistTracksFragment extends OdysseyFragment<TrackModel> implemen
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        MenuInflater inflater = getActivity().getMenuInflater();
+        MenuInflater inflater = requireActivity().getMenuInflater();
         inflater.inflate(R.menu.context_menu_playlist_tracks_fragment, menu);
 
         if (mPlaylistPath != null) {
@@ -317,9 +318,9 @@ public class PlaylistTracksFragment extends OdysseyFragment<TrackModel> implemen
         try {
             // add the playlist
             if (mPlaylistPath == null) {
-                ((GenericActivity) getActivity()).getPlaybackService().enqueuePlaylist(mPlaylistID);
+                ((GenericActivity) requireActivity()).getPlaybackService().enqueuePlaylist(mPlaylistID);
             } else {
-                ((GenericActivity) getActivity()).getPlaybackService().enqueuePlaylistFile(mPlaylistPath);
+                ((GenericActivity) requireActivity()).getPlaybackService().enqueuePlaylistFile(mPlaylistPath);
             }
         } catch (RemoteException e) {
             // TODO Auto-generated catch block
@@ -338,9 +339,9 @@ public class PlaylistTracksFragment extends OdysseyFragment<TrackModel> implemen
 
         try {
             if (mPlaylistPath == null) {
-                ((GenericActivity) getActivity()).getPlaybackService().playPlaylist(mPlaylistID, position);
+                ((GenericActivity) requireActivity()).getPlaybackService().playPlaylist(mPlaylistID, position);
             } else {
-                ((GenericActivity) getActivity()).getPlaybackService().playPlaylistFile(mPlaylistPath, position);
+                ((GenericActivity) requireActivity()).getPlaybackService().playPlaylistFile(mPlaylistPath, position);
             }
         } catch (RemoteException e) {
             // TODO Auto-generated catch block
@@ -357,7 +358,7 @@ public class PlaylistTracksFragment extends OdysseyFragment<TrackModel> implemen
         TrackModel track = mAdapter.getItem(position);
 
         try {
-            ((GenericActivity) getActivity()).getPlaybackService().playTrack(track, false);
+            ((GenericActivity) requireActivity()).getPlaybackService().playTrack(track, false);
         } catch (RemoteException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -374,7 +375,7 @@ public class PlaylistTracksFragment extends OdysseyFragment<TrackModel> implemen
         TrackModel track = mAdapter.getItem(position);
 
         try {
-            ((GenericActivity) getActivity()).getPlaybackService().enqueueTrack(track, asNext);
+            ((GenericActivity) requireActivity()).getPlaybackService().enqueueTrack(track, asNext);
         } catch (RemoteException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -388,7 +389,7 @@ public class PlaylistTracksFragment extends OdysseyFragment<TrackModel> implemen
      * @param position the position of the selected track in the adapter
      */
     private void removeTrackFromPlaylist(int position) {
-        final boolean reloadData = MusicLibraryHelper.removeTrackFromPlaylist(mPlaylistID, position, getActivity().getApplicationContext());
+        final boolean reloadData = MusicLibraryHelper.removeTrackFromPlaylist(mPlaylistID, position, requireContext().getApplicationContext());
 
         if (reloadData) {
             // reload data
