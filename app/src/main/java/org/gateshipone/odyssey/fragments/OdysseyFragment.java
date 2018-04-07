@@ -27,6 +27,7 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.database.DataSetObserver;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
@@ -117,7 +118,7 @@ abstract public class OdysseyFragment<T extends GenericModel> extends Fragment i
         super.onDetach();
 
         // Unregister the memory trim callback with the system.
-        getActivity().getApplicationContext().unregisterComponentCallbacks(mComponentCallback);
+        requireContext().getApplicationContext().unregisterComponentCallbacks(mComponentCallback);
     }
 
     /**
@@ -188,7 +189,7 @@ abstract public class OdysseyFragment<T extends GenericModel> extends Fragment i
      * @param model  Data of the loader
      */
     @Override
-    public void onLoadFinished(Loader<List<T>> loader, List<T> model) {
+    public void onLoadFinished(@NonNull Loader<List<T>> loader, List<T> model) {
         if (mSwipeRefreshLayout != null) {
             mSwipeRefreshLayout.post(() -> mSwipeRefreshLayout.setRefreshing(false));
         }
@@ -215,7 +216,7 @@ abstract public class OdysseyFragment<T extends GenericModel> extends Fragment i
      * @param loader Loader that was resetted.
      */
     @Override
-    public void onLoaderReset(Loader<List<T>> loader) {
+    public void onLoaderReset(@NonNull Loader<List<T>> loader) {
         // Clear the model data of the adapter.
         mAdapter.swapModel(null);
     }

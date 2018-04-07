@@ -100,6 +100,7 @@ public class BookmarksFragment extends OdysseyFragment<BookmarkModel> implements
      * @param bundle Optional arguments
      * @return Return a new Loader instance that is ready to start loading.
      */
+    @NonNull
     @Override
     public Loader<List<BookmarkModel>> onCreateLoader(int id, Bundle bundle) {
         return new BookmarkLoader(getActivity(), false);
@@ -119,7 +120,7 @@ public class BookmarksFragment extends OdysseyFragment<BookmarkModel> implements
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        MenuInflater inflater = getActivity().getMenuInflater();
+        MenuInflater inflater = requireActivity().getMenuInflater();
         inflater.inflate(R.menu.context_menu_bookmarks_fragment, menu);
     }
 
@@ -161,7 +162,7 @@ public class BookmarksFragment extends OdysseyFragment<BookmarkModel> implements
 
         // resume state
         try {
-            ((GenericActivity) getActivity()).getPlaybackService().resumeBookmark(bookmark.getId());
+            ((GenericActivity) requireActivity()).getPlaybackService().resumeBookmark(bookmark.getId());
         } catch (RemoteException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -179,7 +180,7 @@ public class BookmarksFragment extends OdysseyFragment<BookmarkModel> implements
 
         // delete state
         try {
-            ((GenericActivity) getActivity()).getPlaybackService().deleteBookmark(bookmark.getId());
+            ((GenericActivity) requireActivity()).getPlaybackService().deleteBookmark(bookmark.getId());
 
             refreshContent();
         } catch (RemoteException e) {

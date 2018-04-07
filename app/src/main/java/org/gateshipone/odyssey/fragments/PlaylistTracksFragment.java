@@ -111,8 +111,8 @@ public class PlaylistTracksFragment extends OdysseyFragment<TrackModel> implemen
         // get swipe layout
         mSwipeRefreshLayout = rootView.findViewById(R.id.refresh_layout);
         // set swipe colors
-        mSwipeRefreshLayout.setColorSchemeColors(ThemeUtils.getThemeColor(getContext(), R.attr.colorAccent),
-                ThemeUtils.getThemeColor(getContext(), R.attr.colorPrimary));
+        mSwipeRefreshLayout.setColorSchemeColors(ThemeUtils.getThemeColor(requireContext(), R.attr.colorAccent),
+                ThemeUtils.getThemeColor(requireContext(), R.attr.colorPrimary));
         // set swipe refresh listener
         mSwipeRefreshLayout.setOnRefreshListener(this::refreshContent);
 
@@ -142,8 +142,8 @@ public class PlaylistTracksFragment extends OdysseyFragment<TrackModel> implemen
         mPlaylistID = args.getLong(ARG_PLAYLISTID);
         mPlaylistPath = args.getString(ARG_PLAYLISTPATH);
 
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-        mClickAction = PreferenceHelper.getClickAction(sharedPreferences, getContext());
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
+        mClickAction = PreferenceHelper.getClickAction(sharedPreferences, requireContext());
 
         return rootView;
     }
@@ -188,7 +188,7 @@ public class PlaylistTracksFragment extends OdysseyFragment<TrackModel> implemen
      * @param model  Data of the loader
      */
     @Override
-    public void onLoadFinished(Loader<List<TrackModel>> loader, List<TrackModel> model) {
+    public void onLoadFinished(@NonNull Loader<List<TrackModel>> loader, List<TrackModel> model) {
         super.onLoadFinished(loader, model);
 
         if (mToolbarAndFABCallback != null) {
@@ -282,7 +282,7 @@ public class PlaylistTracksFragment extends OdysseyFragment<TrackModel> implemen
         menuInflater.inflate(R.menu.options_menu_playlist_tracks_fragment, menu);
 
         // get tint color
-        int tintColor = ThemeUtils.getThemeColor(getContext(), R.attr.odyssey_color_text_accent);
+        int tintColor = ThemeUtils.getThemeColor(requireContext(), R.attr.odyssey_color_text_accent);
 
         Drawable drawable = menu.findItem(R.id.action_add_playlist_tracks).getIcon();
         drawable = DrawableCompat.wrap(drawable);

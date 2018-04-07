@@ -248,7 +248,7 @@ public class MyMusicFragment extends Fragment implements TabLayout.OnTabSelected
                 return v -> {
                     // play all tracks on device
                     try {
-                        ((GenericActivity) getActivity()).getPlaybackService().playAllTracks(mSearchString);
+                        ((GenericActivity) requireActivity()).getPlaybackService().playAllTracks(mSearchString);
                     } catch (RemoteException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
@@ -277,7 +277,7 @@ public class MyMusicFragment extends Fragment implements TabLayout.OnTabSelected
         }
 
         // force to recreate the optionsmenu
-        getActivity().invalidateOptionsMenu();
+        requireActivity().invalidateOptionsMenu();
 
         OdysseyFragment fragment = mMyMusicPagerAdapter.getRegisteredFragment(tab.getPosition());
         if (fragment != null) {
@@ -345,7 +345,7 @@ public class MyMusicFragment extends Fragment implements TabLayout.OnTabSelected
         mOptionMenu = menu;
 
         // get tint color
-        int tintColor = ThemeUtils.getThemeColor(getContext(), R.attr.odyssey_color_text_accent);
+        int tintColor = ThemeUtils.getThemeColor(requireContext(), R.attr.odyssey_color_text_accent);
 
         Drawable drawable = menu.findItem(R.id.action_search).getIcon();
         drawable = DrawableCompat.wrap(drawable);
@@ -400,7 +400,7 @@ public class MyMusicFragment extends Fragment implements TabLayout.OnTabSelected
 
         private SparseArray<OdysseyFragment> mRegisteredFragments;
 
-        public MyMusicPagerAdapter(FragmentManager fm) {
+        MyMusicPagerAdapter(FragmentManager fm) {
             super(fm);
             mRegisteredFragments = new SparseArray<>();
         }

@@ -99,10 +99,10 @@ public class ArtistAlbumsFragment extends GenericAlbumsFragment implements Cover
 
         setHasOptionsMenu(true);
 
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-        mHideArtwork = sharedPreferences.getBoolean(getContext().getString(R.string.pref_hide_artwork_key), getContext().getResources().getBoolean(R.bool.pref_hide_artwork_default));
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
+        mHideArtwork = sharedPreferences.getBoolean(requireContext().getString(R.string.pref_hide_artwork_key), requireContext().getResources().getBoolean(R.bool.pref_hide_artwork_default));
 
-        mBitmapLoader = new CoverBitmapLoader(getContext(), this);
+        mBitmapLoader = new CoverBitmapLoader(requireContext(), this);
 
         return rootView;
     }
@@ -149,14 +149,14 @@ public class ArtistAlbumsFragment extends GenericAlbumsFragment implements Cover
             mToolbarAndFABCallback.setupToolbar(mArtist.getArtistName(), false, false, false);
         }
 
-        ArtworkManager.getInstance(getContext()).registerOnNewArtistImageListener(this);
+        ArtworkManager.getInstance(requireContext().getApplicationContext()).registerOnNewArtistImageListener(this);
     }
 
     @Override
     public void onPause() {
         super.onPause();
 
-        ArtworkManager.getInstance(getContext()).unregisterOnNewArtistImageListener(this);
+        ArtworkManager.getInstance(requireContext().getApplicationContext()).unregisterOnNewArtistImageListener(this);
     }
 
     /**
@@ -166,6 +166,7 @@ public class ArtistAlbumsFragment extends GenericAlbumsFragment implements Cover
      * @param bundle Optional arguments
      * @return Return a new Loader instance that is ready to start loading.
      */
+    @NonNull
     @Override
     public Loader<List<AlbumModel>> onCreateLoader(int id, Bundle bundle) {
         return new AlbumLoader(getActivity(), mArtist.getArtistID());
@@ -177,7 +178,7 @@ public class ArtistAlbumsFragment extends GenericAlbumsFragment implements Cover
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        MenuInflater inflater = getActivity().getMenuInflater();
+        MenuInflater inflater = requireActivity().getMenuInflater();
         inflater.inflate(R.menu.context_menu_artist_albums_fragment, menu);
     }
 
@@ -220,7 +221,7 @@ public class ArtistAlbumsFragment extends GenericAlbumsFragment implements Cover
         menuInflater.inflate(R.menu.options_menu_artist_albums_fragment, menu);
 
         // get tint color
-        int tintColor = ThemeUtils.getThemeColor(getContext(), R.attr.odyssey_color_text_accent);
+        int tintColor = ThemeUtils.getThemeColor(requireContext(), R.attr.odyssey_color_text_accent);
 
         Drawable drawable = menu.findItem(R.id.action_add_artist_albums).getIcon();
         drawable = DrawableCompat.wrap(drawable);
@@ -241,7 +242,7 @@ public class ArtistAlbumsFragment extends GenericAlbumsFragment implements Cover
         switch (item.getItemId()) {
             case R.id.action_reset_artwork:
                 mToolbarAndFABCallback.setupToolbar(mArtist.getArtistName(), false, false, false);
-                ArtworkManager.getInstance(getContext()).resetArtistImage(mArtist, getContext());
+                ArtworkManager.getInstance(requireContext().getApplicationContext()).resetArtistImage(mArtist, requireContext().getApplicationContext());
                 return true;
             case R.id.action_add_artist_albums:
                 enqueueArtist();
@@ -262,12 +263,12 @@ public class ArtistAlbumsFragment extends GenericAlbumsFragment implements Cover
      */
     private void enqueueArtist() {
         // Read order preference
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(requireContext());
         String orderKey = sharedPref.getString(getString(R.string.pref_album_sort_order_key), getString(R.string.pref_artist_albums_sort_default));
 
         // enqueue artist
         try {
-            ((GenericActivity) getActivity()).getPlaybackService().enqueueArtist(mArtist.getArtistID(), orderKey);
+            ((GenericActivity) requireActivity()).getPlaybackService().enqueueArtist(mArtist.getArtistID(), orderKey);
         } catch (RemoteException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -280,12 +281,12 @@ public class ArtistAlbumsFragment extends GenericAlbumsFragment implements Cover
      */
     private void playArtist() {
         // Read order preference
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(requireContext());
         String orderKey = sharedPref.getString(getString(R.string.pref_album_sort_order_key), getString(R.string.pref_artist_albums_sort_default));
 
         // play artist
         try {
-            ((GenericActivity) getActivity()).getPlaybackService().playArtist(mArtist.getArtistID(), orderKey);
+            ((GenericActivity) requireActivity()).getPlaybackService().playArtist(mArtist.getArtistID(), orderKey);
         } catch (RemoteException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -295,7 +296,7 @@ public class ArtistAlbumsFragment extends GenericAlbumsFragment implements Cover
     @Override
     public void receiveArtistBitmap(final Bitmap bm) {
         if (bm != null && mToolbarAndFABCallback != null) {
-            getActivity().runOnUiThread(() -> {
+            requireActivity().runOnUiThread(() -> {
                 // set toolbar behaviour and title
                 mToolbarAndFABCallback.setupToolbar(mArtist.getArtistName(), false, false, true);
                 // set toolbar image

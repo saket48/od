@@ -119,6 +119,7 @@ public class SavedPlaylistsFragment extends OdysseyFragment<PlaylistModel> imple
         }
     }
 
+    @NonNull
     @Override
     public Loader<List<PlaylistModel>> onCreateLoader(int arg0, Bundle bundle) {
         return new PlaylistLoader(getActivity(), false);
@@ -131,7 +132,7 @@ public class SavedPlaylistsFragment extends OdysseyFragment<PlaylistModel> imple
      * @param data   Data of the loader
      */
     @Override
-    public void onLoadFinished(Loader<List<PlaylistModel>> loader, List<PlaylistModel> data) {
+    public void onLoadFinished(@NonNull Loader<List<PlaylistModel>> loader, List<PlaylistModel> data) {
         super.onLoadFinished(loader, data);
 
         // Reset old scroll position
@@ -166,7 +167,7 @@ public class SavedPlaylistsFragment extends OdysseyFragment<PlaylistModel> imple
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        MenuInflater inflater = getActivity().getMenuInflater();
+        MenuInflater inflater = requireActivity().getMenuInflater();
         inflater.inflate(R.menu.context_menu_saved_playlists_fragment, menu);
     }
 
@@ -210,7 +211,7 @@ public class SavedPlaylistsFragment extends OdysseyFragment<PlaylistModel> imple
 
         try {
             // add playlist
-            ((GenericActivity) getActivity()).getPlaybackService().enqueuePlaylist(clickedPlaylist.getPlaylistID());
+            ((GenericActivity) requireActivity()).getPlaybackService().enqueuePlaylist(clickedPlaylist.getPlaylistID());
         } catch (RemoteException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -228,7 +229,7 @@ public class SavedPlaylistsFragment extends OdysseyFragment<PlaylistModel> imple
 
         try {
             // add playlist
-            ((GenericActivity) getActivity()).getPlaybackService().playPlaylist(clickedPlaylist.getPlaylistID(), 0);
+            ((GenericActivity) requireActivity()).getPlaybackService().playPlaylist(clickedPlaylist.getPlaylistID(), 0);
         } catch (RemoteException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -245,7 +246,7 @@ public class SavedPlaylistsFragment extends OdysseyFragment<PlaylistModel> imple
         final PlaylistModel clickedPlaylist = mAdapter.getItem(position);
 
         // delete current playlist
-        final boolean reloadData = MusicLibraryHelper.removePlaylist(clickedPlaylist.getPlaylistID(), getActivity().getApplicationContext());
+        final boolean reloadData = MusicLibraryHelper.removePlaylist(clickedPlaylist.getPlaylistID(), requireContext().getApplicationContext());
 
         if (reloadData) {
             // reload data

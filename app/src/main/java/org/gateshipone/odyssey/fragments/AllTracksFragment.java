@@ -81,8 +81,8 @@ public class AllTracksFragment extends OdysseyFragment<TrackModel> implements Ad
         // get swipe layout
         mSwipeRefreshLayout = rootView.findViewById(R.id.refresh_layout);
         // set swipe colors
-        mSwipeRefreshLayout.setColorSchemeColors(ThemeUtils.getThemeColor(getContext(), R.attr.colorAccent),
-                ThemeUtils.getThemeColor(getContext(), R.attr.colorPrimary));
+        mSwipeRefreshLayout.setColorSchemeColors(ThemeUtils.getThemeColor(requireContext(), R.attr.colorAccent),
+                ThemeUtils.getThemeColor(requireContext(), R.attr.colorPrimary));
         // set swipe refresh listener
         mSwipeRefreshLayout.setOnRefreshListener(this::refreshContent);
 
@@ -99,8 +99,8 @@ public class AllTracksFragment extends OdysseyFragment<TrackModel> implements Ad
 
         registerForContextMenu(mListView);
 
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-        mClickAction = PreferenceHelper.getClickAction(sharedPreferences, getContext());
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
+        mClickAction = PreferenceHelper.getClickAction(sharedPreferences, requireContext());
 
         return rootView;
     }
@@ -128,6 +128,7 @@ public class AllTracksFragment extends OdysseyFragment<TrackModel> implements Ad
      * @param bundle Optional arguments
      * @return Return a new Loader instance that is ready to start loading.
      */
+    @NonNull
     @Override
     public Loader<List<TrackModel>> onCreateLoader(int id, Bundle bundle) {
         return new TrackLoader(getActivity());
@@ -140,7 +141,7 @@ public class AllTracksFragment extends OdysseyFragment<TrackModel> implements Ad
      * @param data   Data of the loader
      */
     @Override
-    public void onLoadFinished(Loader<List<TrackModel>> loader, List<TrackModel> data) {
+    public void onLoadFinished(@NonNull Loader<List<TrackModel>> loader, List<TrackModel> data) {
         super.onLoadFinished(loader, data);
     }
 
@@ -171,7 +172,7 @@ public class AllTracksFragment extends OdysseyFragment<TrackModel> implements Ad
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        MenuInflater inflater = getActivity().getMenuInflater();
+        MenuInflater inflater = requireActivity().getMenuInflater();
         inflater.inflate(R.menu.context_menu_all_tracks_fragment, menu);
     }
 
@@ -234,7 +235,7 @@ public class AllTracksFragment extends OdysseyFragment<TrackModel> implements Ad
         TrackModel track = mAdapter.getItem(position);
 
         try {
-            ((GenericActivity) getActivity()).getPlaybackService().playTrack(track, clearPlaylist);
+            ((GenericActivity) requireActivity()).getPlaybackService().playTrack(track, clearPlaylist);
         } catch (RemoteException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -252,7 +253,7 @@ public class AllTracksFragment extends OdysseyFragment<TrackModel> implements Ad
         TrackModel track = mAdapter.getItem(position);
 
         try {
-            ((GenericActivity) getActivity()).getPlaybackService().enqueueTrack(track, asNext);
+            ((GenericActivity) requireActivity()).getPlaybackService().enqueueTrack(track, asNext);
         } catch (RemoteException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

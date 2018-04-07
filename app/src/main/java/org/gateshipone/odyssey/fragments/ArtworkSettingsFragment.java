@@ -67,42 +67,42 @@ public class ArtworkSettingsFragment extends PreferenceFragmentCompat implements
         // add listener to clear album data
         Preference clearAlbums = findPreference(getString(R.string.pref_clear_album_key));
         clearAlbums.setOnPreferenceClickListener(preference -> {
-            final Context context = getContext();
-            ArtworkDatabaseManager.getInstance(context).clearAlbumImages(context);
+            final Context applicationContext = requireContext().getApplicationContext();
+            ArtworkDatabaseManager.getInstance(applicationContext).clearAlbumImages(applicationContext);
             return true;
         });
 
         // add listener to clear artist data
         Preference clearArtist = findPreference(getString(R.string.pref_clear_artist_key));
         clearArtist.setOnPreferenceClickListener(preference -> {
-            final Context context = getContext();
-            ArtworkDatabaseManager.getInstance(context).clearArtistImages(context);
+            final Context applicationContext = requireContext().getApplicationContext();
+            ArtworkDatabaseManager.getInstance(applicationContext).clearArtistImages(applicationContext);
             return true;
         });
 
         Preference clearBlockedAlbums = findPreference(getString(R.string.pref_clear_blocked_album_key));
         clearBlockedAlbums.setOnPreferenceClickListener(preference -> {
-            ArtworkDatabaseManager.getInstance(getContext()).clearBlockedAlbumImages();
+            ArtworkDatabaseManager.getInstance(requireContext().getApplicationContext()).clearBlockedAlbumImages();
             return true;
         });
 
         Preference clearBlockedArtists = findPreference(getString(R.string.pref_clear_blocked_artist_key));
         clearBlockedArtists.setOnPreferenceClickListener(preference -> {
-            ArtworkDatabaseManager.getInstance(getContext()).clearBlockedArtistImages();
+            ArtworkDatabaseManager.getInstance(requireContext().getApplicationContext()).clearBlockedArtistImages();
             return true;
         });
 
         Preference bulkLoad = findPreference(getString(R.string.pref_bulk_load_key));
         bulkLoad.setOnPreferenceClickListener(preference -> {
             BulkDownloaderDialog bulkDownloaderDialog = BulkDownloaderDialog.newInstance(R.string.bulk_download_notice_title, R.string.bulk_download_notice_text, R.string.error_dialog_ok_action);
-            bulkDownloaderDialog.show(getFragmentManager(), "BulkDownloaderDialog");
+            bulkDownloaderDialog.show(requireActivity().getSupportFragmentManager(), "BulkDownloaderDialog");
 
             return true;
         });
 
 
         // get the playbackservice, when the connection is successfully established the timer gets restarted
-        mServiceConnection = new PlaybackServiceConnection(getContext().getApplicationContext());
+        mServiceConnection = new PlaybackServiceConnection(requireContext().getApplicationContext());
     }
 
     /**
@@ -174,11 +174,11 @@ public class ArtworkSettingsFragment extends PreferenceFragmentCompat implements
 
         if (key.equals(albumProviderKey) || key.equals(artistProviderKey) || key.equals(downloadWifiOnlyKey)) {
             Intent nextIntent = new Intent(BulkDownloadService.ACTION_CANCEL_BULKDOWNLOAD);
-            getActivity().getApplicationContext().sendBroadcast(nextIntent);
+            requireContext().getApplicationContext().sendBroadcast(nextIntent);
 
-            ArtworkManager artworkManager = ArtworkManager.getInstance(getContext().getApplicationContext());
+            ArtworkManager artworkManager = ArtworkManager.getInstance(requireContext().getApplicationContext());
 
-            artworkManager.cancelAllRequests(getContext());
+            artworkManager.cancelAllRequests(requireContext());
 
             if (key.equals(albumProviderKey)) {
                 artworkManager.setAlbumProvider(sharedPreferences.getString(albumProviderKey, getString(R.string.pref_artwork_provider_album_default)));

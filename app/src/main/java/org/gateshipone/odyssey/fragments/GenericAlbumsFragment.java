@@ -69,7 +69,7 @@ public abstract class GenericAlbumsFragment extends OdysseyFragment<AlbumModel> 
         // Inflate the layout for this fragment
         View rootView;
 
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(requireContext());
         String viewAppearance = sharedPref.getString(getString(R.string.pref_view_library_key), getString(R.string.pref_library_view_default));
 
         boolean useList = viewAppearance.equals(getString(R.string.pref_library_view_list_key));
@@ -87,8 +87,8 @@ public abstract class GenericAlbumsFragment extends OdysseyFragment<AlbumModel> 
         // get swipe layout
         mSwipeRefreshLayout = rootView.findViewById(R.id.refresh_layout);
         // set swipe colors
-        mSwipeRefreshLayout.setColorSchemeColors(ThemeUtils.getThemeColor(getContext(), R.attr.colorAccent),
-                ThemeUtils.getThemeColor(getContext(), R.attr.colorPrimary));
+        mSwipeRefreshLayout.setColorSchemeColors(ThemeUtils.getThemeColor(requireContext(), R.attr.colorAccent),
+                ThemeUtils.getThemeColor(requireContext(), R.attr.colorPrimary));
         // set swipe refresh listener
         mSwipeRefreshLayout.setOnRefreshListener(this::refreshContent);
 
@@ -114,14 +114,14 @@ public abstract class GenericAlbumsFragment extends OdysseyFragment<AlbumModel> 
     public void onResume() {
         super.onResume();
 
-        ArtworkManager.getInstance(getContext().getApplicationContext()).registerOnNewAlbumImageListener((AlbumsAdapter)mAdapter);
+        ArtworkManager.getInstance(requireContext().getApplicationContext()).registerOnNewAlbumImageListener((AlbumsAdapter)mAdapter);
     }
 
     @Override
     public void onPause() {
         super.onPause();
 
-        ArtworkManager.getInstance(getContext().getApplicationContext()).unregisterOnNewAlbumImageListener((AlbumsAdapter)mAdapter);
+        ArtworkManager.getInstance(requireContext().getApplicationContext()).unregisterOnNewAlbumImageListener((AlbumsAdapter)mAdapter);
     }
 
     /**
@@ -153,7 +153,7 @@ public abstract class GenericAlbumsFragment extends OdysseyFragment<AlbumModel> 
      * @param data   Data of the loader
      */
     @Override
-    public void onLoadFinished(Loader<List<AlbumModel>> loader, List<AlbumModel> data) {
+    public void onLoadFinished(@NonNull Loader<List<AlbumModel>> loader, List<AlbumModel> data) {
         super.onLoadFinished(loader, data);
 
         // Reset old scroll position
@@ -197,7 +197,7 @@ public abstract class GenericAlbumsFragment extends OdysseyFragment<AlbumModel> 
 
         // enqueue album
         try {
-            ((GenericActivity) getActivity()).getPlaybackService().enqueueAlbum(albumKey);
+            ((GenericActivity) requireActivity()).getPlaybackService().enqueueAlbum(albumKey);
         } catch (RemoteException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -217,7 +217,7 @@ public abstract class GenericAlbumsFragment extends OdysseyFragment<AlbumModel> 
 
         // play album
         try {
-            ((GenericActivity) getActivity()).getPlaybackService().playAlbum(albumKey, 0);
+            ((GenericActivity) requireActivity()).getPlaybackService().playAlbum(albumKey, 0);
         } catch (RemoteException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

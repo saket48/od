@@ -138,11 +138,11 @@ public class AlbumTracksFragment extends OdysseyFragment<TrackModel> implements 
 
         setHasOptionsMenu(true);
 
-        mBitmapLoader = new CoverBitmapLoader(getContext(), this);
+        mBitmapLoader = new CoverBitmapLoader(requireContext(), this);
 
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-        mHideArtwork = sharedPreferences.getBoolean(getContext().getString(R.string.pref_hide_artwork_key), getContext().getResources().getBoolean(R.bool.pref_hide_artwork_default));
-        mClickAction = PreferenceHelper.getClickAction(sharedPreferences, getContext());
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
+        mHideArtwork = sharedPreferences.getBoolean(requireContext().getString(R.string.pref_hide_artwork_key), requireContext().getResources().getBoolean(R.bool.pref_hide_artwork_default));
+        mClickAction = PreferenceHelper.getClickAction(sharedPreferences, requireContext());
 
         return rootView;
     }
@@ -211,14 +211,14 @@ public class AlbumTracksFragment extends OdysseyFragment<TrackModel> implements 
             mToolbarAndFABCallback.setupToolbar(mAlbum.getAlbumName(), false, false, false);
         }
 
-        ArtworkManager.getInstance(getContext()).registerOnNewAlbumImageListener(this);
+        ArtworkManager.getInstance(requireContext().getApplicationContext()).registerOnNewAlbumImageListener(this);
     }
 
     @Override
     public void onPause() {
         super.onPause();
 
-        ArtworkManager.getInstance(getContext()).unregisterOnNewAlbumImageListener(this);
+        ArtworkManager.getInstance(requireContext().getApplicationContext()).unregisterOnNewAlbumImageListener(this);
     }
 
     /**
@@ -228,6 +228,7 @@ public class AlbumTracksFragment extends OdysseyFragment<TrackModel> implements 
      * @param bundle Optional arguments
      * @return Return a new Loader instance that is ready to start loading.
      */
+    @NonNull
     @Override
     public Loader<List<TrackModel>> onCreateLoader(int id, Bundle bundle) {
         return new TrackLoader(getActivity(), mAlbum.getAlbumKey());
@@ -260,7 +261,7 @@ public class AlbumTracksFragment extends OdysseyFragment<TrackModel> implements 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        MenuInflater inflater = getActivity().getMenuInflater();
+        MenuInflater inflater = requireActivity().getMenuInflater();
         inflater.inflate(R.menu.context_menu_album_tracks_fragment, menu);
     }
 
@@ -309,7 +310,7 @@ public class AlbumTracksFragment extends OdysseyFragment<TrackModel> implements 
         menuInflater.inflate(R.menu.options_menu_album_tracks_fragment, menu);
 
         // get tint color
-        int tintColor = ThemeUtils.getThemeColor(getContext(), R.attr.odyssey_color_text_accent);
+        int tintColor = ThemeUtils.getThemeColor(requireContext(), R.attr.odyssey_color_text_accent);
 
         Drawable drawable = menu.findItem(R.id.action_add_album).getIcon();
         drawable = DrawableCompat.wrap(drawable);
@@ -330,7 +331,7 @@ public class AlbumTracksFragment extends OdysseyFragment<TrackModel> implements 
         switch (item.getItemId()) {
             case R.id.action_reset_artwork:
                 mToolbarAndFABCallback.setupToolbar(mAlbum.getAlbumName(), false, false, false);
-                ArtworkManager.getInstance(getContext()).resetAlbumImage(mAlbum, getContext());
+                ArtworkManager.getInstance(requireContext().getApplicationContext()).resetAlbumImage(mAlbum, requireContext().getApplicationContext());
                 return true;
             case R.id.action_add_album:
                 enqueueAlbum();
@@ -374,7 +375,7 @@ public class AlbumTracksFragment extends OdysseyFragment<TrackModel> implements 
         TrackModel track = mAdapter.getItem(position);
 
         try {
-            ((GenericActivity) getActivity()).getPlaybackService().enqueueTrack(track, asNext);
+            ((GenericActivity) requireActivity()).getPlaybackService().enqueueTrack(track, asNext);
         } catch (RemoteException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -390,7 +391,7 @@ public class AlbumTracksFragment extends OdysseyFragment<TrackModel> implements 
         TrackModel track = mAdapter.getItem(position);
 
         try {
-            ((GenericActivity) getActivity()).getPlaybackService().playTrack(track, false);
+            ((GenericActivity) requireActivity()).getPlaybackService().playTrack(track, false);
         } catch (RemoteException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -404,7 +405,7 @@ public class AlbumTracksFragment extends OdysseyFragment<TrackModel> implements 
         // Enqueue complete album
 
         try {
-            ((GenericActivity) getActivity()).getPlaybackService().enqueueAlbum(mAlbum.getAlbumKey());
+            ((GenericActivity) requireActivity()).getPlaybackService().enqueueAlbum(mAlbum.getAlbumKey());
         } catch (RemoteException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -421,7 +422,7 @@ public class AlbumTracksFragment extends OdysseyFragment<TrackModel> implements 
         // clear playlist and play current album
 
         try {
-            ((GenericActivity) getActivity()).getPlaybackService().playAlbum(mAlbum.getAlbumKey(), position);
+            ((GenericActivity) requireActivity()).getPlaybackService().playAlbum(mAlbum.getAlbumKey(), position);
         } catch (RemoteException e1) {
             // TODO Auto-generated catch block
             e1.printStackTrace();
@@ -431,7 +432,7 @@ public class AlbumTracksFragment extends OdysseyFragment<TrackModel> implements 
     @Override
     public void receiveAlbumBitmap(final Bitmap bm) {
         if (bm != null && mToolbarAndFABCallback != null) {
-            getActivity().runOnUiThread(() -> {
+            requireActivity().runOnUiThread(() -> {
                 // set toolbar behaviour and title
                 mToolbarAndFABCallback.setupToolbar(mAlbum.getAlbumName(), false, false, true);
                 // set toolbar image

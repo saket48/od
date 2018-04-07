@@ -86,6 +86,7 @@ public class AlbumsFragment extends GenericAlbumsFragment {
      * @param bundle Optional arguments
      * @return Return a new Loader instance that is ready to start loading.
      */
+    @NonNull
     @Override
     public Loader<List<AlbumModel>> onCreateLoader(int id, Bundle bundle) {
         // all albums
@@ -98,7 +99,7 @@ public class AlbumsFragment extends GenericAlbumsFragment {
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        MenuInflater inflater = getActivity().getMenuInflater();
+        MenuInflater inflater = requireActivity().getMenuInflater();
         inflater.inflate(R.menu.context_menu_albums_fragment, menu);
     }
 
