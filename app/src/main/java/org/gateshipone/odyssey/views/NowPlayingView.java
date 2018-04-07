@@ -928,7 +928,7 @@ public class NowPlayingView extends RelativeLayout implements SeekBar.OnSeekBarC
             }
         });
 
-        mCoverLoader = new CoverBitmapLoader(getContext(), new CoverReceiverClass());
+        mCoverLoader = new CoverBitmapLoader(getContext().getApplicationContext(), new CoverReceiverClass());
 
         invalidate();
     }

@@ -138,7 +138,7 @@ public class AlbumTracksFragment extends OdysseyFragment<TrackModel> implements 
 
         setHasOptionsMenu(true);
 
-        mBitmapLoader = new CoverBitmapLoader(requireContext(), this);
+        mBitmapLoader = new CoverBitmapLoader(requireContext().getApplicationContext(), this);
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
         mHideArtwork = sharedPreferences.getBoolean(requireContext().getString(R.string.pref_hide_artwork_key), requireContext().getResources().getBoolean(R.bool.pref_hide_artwork_default));

@@ -102,7 +102,7 @@ public class ArtistAlbumsFragment extends GenericAlbumsFragment implements Cover
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
         mHideArtwork = sharedPreferences.getBoolean(requireContext().getString(R.string.pref_hide_artwork_key), requireContext().getResources().getBoolean(R.bool.pref_hide_artwork_default));
 
-        mBitmapLoader = new CoverBitmapLoader(requireContext(), this);
+        mBitmapLoader = new CoverBitmapLoader(requireContext().getApplicationContext(), this);
 
         return rootView;
     }
