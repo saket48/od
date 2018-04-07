@@ -113,7 +113,7 @@ public class AlbumTracksFragment extends OdysseyFragment<TrackModel> implements 
         // get listview
         mListView = rootView.findViewById(R.id.list_linear_listview);
 
-        mAdapter = new TracksAdapter(getActivity(), true);
+        mAdapter = new TracksAdapter(requireActivity(), true);
 
         // Disable sections
         mAdapter.enableSections(false);

@@ -116,7 +116,7 @@ public class PlaylistTracksFragment extends OdysseyFragment<TrackModel> implemen
         // set swipe refresh listener
         mSwipeRefreshLayout.setOnRefreshListener(this::refreshContent);
 
-        mAdapter = new TracksAdapter(getActivity());
+        mAdapter = new TracksAdapter(requireActivity());
 
         // Disable sections
         mAdapter.enableSections(false);

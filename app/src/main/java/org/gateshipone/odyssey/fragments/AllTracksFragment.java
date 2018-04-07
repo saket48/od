@@ -86,7 +86,7 @@ public class AllTracksFragment extends OdysseyFragment<TrackModel> implements Ad
         // set swipe refresh listener
         mSwipeRefreshLayout.setOnRefreshListener(this::refreshContent);
 
-        mAdapter = new TracksAdapter(getActivity());
+        mAdapter = new TracksAdapter(requireActivity());
 
         mListView.setAdapter(mAdapter);
         mListView.setOnItemClickListener(this);

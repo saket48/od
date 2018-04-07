@@ -92,7 +92,7 @@ public abstract class GenericAlbumsFragment extends OdysseyFragment<AlbumModel> 
         // set swipe refresh listener
         mSwipeRefreshLayout.setOnRefreshListener(this::refreshContent);
 
-        mAdapter = new AlbumsAdapter(getActivity(), mListView, useList);
+        mAdapter = new AlbumsAdapter(requireActivity(), mListView, useList);
 
         mListView.setAdapter(mAdapter);
         mListView.setOnScrollListener(new ScrollSpeedListener(mAdapter, mListView));

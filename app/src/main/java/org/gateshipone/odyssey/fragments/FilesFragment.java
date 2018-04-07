@@ -128,7 +128,7 @@ public class FilesFragment extends OdysseyFragment<FileModel> implements Adapter
         // set swipe refresh listener
         mSwipeRefreshLayout.setOnRefreshListener(this::refreshContent);
 
-        mAdapter = new FilesAdapter(getActivity());
+        mAdapter = new FilesAdapter(requireActivity());
 
         mListView.setAdapter(mAdapter);
         mListView.setOnItemClickListener(this);

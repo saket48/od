@@ -70,7 +70,7 @@ public class SavedPlaylistsFragment extends OdysseyFragment<PlaylistModel> imple
         // get listview
         mListView = rootView.findViewById(R.id.list_linear_listview);
 
-        mAdapter = new SavedPlaylistsAdapter(getActivity());
+        mAdapter = new SavedPlaylistsAdapter(requireActivity());
 
         mListView.setAdapter(mAdapter);
         mListView.setOnItemClickListener(this);

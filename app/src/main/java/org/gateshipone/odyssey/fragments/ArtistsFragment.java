@@ -100,7 +100,7 @@ public class ArtistsFragment extends OdysseyFragment<ArtistModel> implements Ada
         // set swipe refresh listener
         mSwipeRefreshLayout.setOnRefreshListener(this::refreshContent);
 
-        mAdapter = new ArtistsAdapter(getActivity(), mListView, useList);
+        mAdapter = new ArtistsAdapter(requireActivity(), mListView, useList);
 
         mListView.setAdapter(mAdapter);
         mListView.setOnScrollListener(new ScrollSpeedListener(mAdapter, mListView));

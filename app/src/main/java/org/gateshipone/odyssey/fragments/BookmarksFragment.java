@@ -60,7 +60,7 @@ public class BookmarksFragment extends OdysseyFragment<BookmarkModel> implements
         // get listview
         mListView = rootView.findViewById(R.id.list_linear_listview);
 
-        mAdapter = new BookmarksAdapter(getActivity());
+        mAdapter = new BookmarksAdapter(requireActivity());
 
         mListView.setAdapter(mAdapter);
 

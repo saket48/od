@@ -109,7 +109,7 @@ public class ChooseBookmarkDialog extends DialogFragment implements LoaderManage
         // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-        mBookmarksAdapter = new BookmarksAdapter(getActivity());
+        mBookmarksAdapter = new BookmarksAdapter(requireActivity());
 
         builder.setTitle(R.string.dialog_choose_bookmark).setAdapter(mBookmarksAdapter, (dialog, which) -> {
 
