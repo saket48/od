@@ -73,7 +73,7 @@ public class BulkDownloaderDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the Builder class for convenient dialog construction
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
 
         // read arguments to identify the error title and message
         Bundle mArgs = getArguments();
@@ -92,7 +92,7 @@ public class BulkDownloaderDialog extends DialogFragment {
                     serviceIntent.setAction(BulkDownloadService.ACTION_START_BULKDOWNLOAD);
 
                     // get the current settings for the bulk download
-                    SharedPreferences sharedPref = android.support.v7.preference.PreferenceManager.getDefaultSharedPreferences(getContext().getApplicationContext());
+                    SharedPreferences sharedPref = android.support.v7.preference.PreferenceManager.getDefaultSharedPreferences(requireContext().getApplicationContext());
                     serviceIntent.putExtra(BUNDLE_KEY_ARTIST_PROVIDER, sharedPref.getString(getString(R.string.pref_artist_provider_key),
                             getString(R.string.pref_artwork_provider_artist_default)));
                     serviceIntent.putExtra(BUNDLE_KEY_ALBUM_PROVIDER, sharedPref.getString(getString(R.string.pref_album_provider_key),
@@ -100,9 +100,9 @@ public class BulkDownloaderDialog extends DialogFragment {
                     serviceIntent.putExtra(BUNDLE_KEY_WIFI_ONLY, sharedPref.getBoolean(getString(R.string.pref_download_wifi_only_key),
                             getResources().getBoolean(R.bool.pref_download_wifi_default)));
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        getActivity().startForegroundService(serviceIntent);
+                        requireActivity().startForegroundService(serviceIntent);
                     } else {
-                        getActivity().startService(serviceIntent);
+                        requireActivity().startService(serviceIntent);
                     }
                 });
 

@@ -68,13 +68,13 @@ public class ChooseStorageVolumeDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // get the list of available storage volumes
-        List<String> storageVolumes = FileExplorerHelper.getInstance().getStorageVolumes(getContext());
+        List<String> storageVolumes = FileExplorerHelper.getInstance().getStorageVolumes(requireContext());
 
         // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         builder.setTitle(R.string.dialog_choose_storage_volume_title);
-        mStorageVolumesAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, storageVolumes);
+        mStorageVolumesAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1, storageVolumes);
         builder.setAdapter(mStorageVolumesAdapter, (dialogInterface, item) -> mDirectorySelectedCallback.onDirectorySelected(mStorageVolumesAdapter.getItem(item), true));
 
         // Create the AlertDialog object and return it

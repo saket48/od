@@ -31,7 +31,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
-import android.support.v7.app.AppCompatActivity;
 
 import org.gateshipone.odyssey.R;
 import org.gateshipone.odyssey.adapter.SavedPlaylistsAdapter;
@@ -74,6 +73,7 @@ public class ChoosePlaylistDialog extends DialogFragment implements LoaderManage
      * @param args Optional arguments
      * @return Return a new Loader instance that is ready to start loading.
      */
+    @NonNull
     @Override
     public Loader<List<PlaylistModel>> onCreateLoader(int id, Bundle args) {
         return new PlaylistLoader(getActivity(), true);
@@ -86,7 +86,7 @@ public class ChoosePlaylistDialog extends DialogFragment implements LoaderManage
      * @param data   Data of the loader
      */
     @Override
-    public void onLoadFinished(Loader<List<PlaylistModel>> loader, List<PlaylistModel> data) {
+    public void onLoadFinished(@NonNull Loader<List<PlaylistModel>> loader, List<PlaylistModel> data) {
         mPlaylistsListViewAdapter.swapModel(data);
     }
 
@@ -96,7 +96,7 @@ public class ChoosePlaylistDialog extends DialogFragment implements LoaderManage
      * @param loader Loader that was resetted.
      */
     @Override
-    public void onLoaderReset(Loader<List<PlaylistModel>> loader) {
+    public void onLoaderReset(@NonNull Loader<List<PlaylistModel>> loader) {
         mPlaylistsListViewAdapter.swapModel(null);
     }
 
@@ -116,7 +116,7 @@ public class ChoosePlaylistDialog extends DialogFragment implements LoaderManage
             if (which == 0) {
                 // open save dialog to create a new bookmark
                 SaveDialog saveDialog = SaveDialog.newInstance(SaveDialog.OBJECTTYPE.PLAYLIST);
-                saveDialog.show(((AppCompatActivity) getContext()).getSupportFragmentManager(), "SaveDialog");
+                saveDialog.show(requireActivity().getSupportFragmentManager(), "SaveDialog");
             } else {
                 // override existing bookmark
                 PlaylistModel playlist = mPlaylistsListViewAdapter.getItem(which);
@@ -133,7 +133,7 @@ public class ChoosePlaylistDialog extends DialogFragment implements LoaderManage
 
         // set divider
         AlertDialog dlg = builder.create();
-        dlg.getListView().setDivider(new ColorDrawable(ThemeUtils.getThemeColor(getContext(), R.attr.odyssey_color_background_selected)));
+        dlg.getListView().setDivider(new ColorDrawable(ThemeUtils.getThemeColor(requireContext(), R.attr.odyssey_color_background_selected)));
         dlg.getListView().setDividerHeight(getResources().getDimensionPixelSize(R.dimen.list_divider_size));
 
         return dlg;
